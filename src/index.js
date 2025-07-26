@@ -3,7 +3,6 @@ const app = express();
 const cors = require("cors");
 const sequelize = require("./config/db.config");
 const path = require("path");
-
 require("dotenv").config();
 
 const port = process.env.PORT;
