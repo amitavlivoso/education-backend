@@ -18,7 +18,6 @@ const User = sequelize.define("User", {
    phone: {
     type: DataTypes.STRING,
     allowNull: true,
-  
     validate: {
       len: [10, 15] 
     }
