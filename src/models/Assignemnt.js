@@ -1,27 +1,32 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
+const Teacher=require('../models/Teacher');
 
-const Teacher = sequelize.define('Teacher', {
- userid:{
+const Assignment = sequelize.define('Assignment', {
+ teacherid:{
      type: DataTypes.STRING,
     allowNull: false,
-    //  references: { model: User, key: "id" },
+     references: { model: Teacher, key: "id" },
  },
-  address: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
   subject: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  experience: {
+  chapter: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  assignmentname: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  assignment: {
     type: DataTypes.STRING,
     allowNull: true,
   },
 }, {
   timestamps: true,
-   tableName: 'teacherdetails',
+   tableName: 'Assignmentdetails',
 });
 
-module.exports = Teacher;
+module.exports = Assignment;

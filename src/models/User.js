@@ -2,39 +2,21 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
 const User = sequelize.define("User", {
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  }, 
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-   phone: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    validate: {
-      len: [10, 15] 
-    }
-  },
-   role: {
-    type: DataTypes.ENUM('teacher', 'student','admin'),
-    allowNull: false,
+  name: DataTypes.STRING,
+  email: DataTypes.STRING,
+  password: DataTypes.STRING,
+  phone: DataTypes.STRING,
+  role: {
+    type: DataTypes.ENUM('teacher', 'student', 'admin'),
     defaultValue: 'student'
   },
-  otp: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
-  otpExpiry: {
-    type: DataTypes.DATE,
-    allowNull: true
-  },
+  otp: DataTypes.STRING,
+  otpExpiry: DataTypes.DATE,
   isVerified: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
@@ -42,5 +24,5 @@ const User = sequelize.define("User", {
 }, {
   timestamps: true
 });
-sequelize.sync({ alter: true });
+
 module.exports = User;
