@@ -24,7 +24,7 @@ exports.getAssignments = async (req, res) => {
 exports.getAssignmentById = async (req, res) => {
   try {
     const { id } = req.params;
-    const assignment = await Assignment.getById(id);
+    const assignment = await Assignment.findByPk(id); // Or custom method
 
     if (!assignment) {
       return res.status(404).json({
@@ -41,6 +41,7 @@ exports.getAssignmentById = async (req, res) => {
       error: false,
     });
   } catch (error) {
+    console.error("Error fetching assignment:", error);
     res.status(400).json({
       message: "Error fetching assignment by ID",
       error: error.message,
@@ -53,10 +54,31 @@ exports.getAssignmentById = async (req, res) => {
 exports.updateAssignment = async (req, res) => {
   try {
     const { id } = req.params;
-    const updated = await Assignment.updateById(id, req.body);
-    res.json({ success: true, data: updated });
+
+    // Find the assignment first
+    const assignment = await Assignment.findByPk(id);
+
+    if (!assignment) {
+      return res.status(404).json({
+        success: false,
+        message: "Assignment not found",
+      });
+    }
+
+    // Update with request body
+    await assignment.update(req.body);
+
+    res.json({
+      success: true,
+      message: "Assignment updated successfully",
+      data: assignment,
+    });
   } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
+    console.error("Update error:", err);
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 
@@ -64,9 +86,25 @@ exports.updateAssignment = async (req, res) => {
 exports.deleteAssignment = async (req, res) => {
   try {
     const { id } = req.params;
-    await Assignment.deleteById(id);
-    res.json({ success: true, message: "Assignment deleted" });
+
+    const assignment = await Assignment.findByPk(id);
+    if (!assignment) {
+      return res.status(404).json({
+        success: false,
+        message: "Assignment not found",
+      });
+    }
+
+    await assignment.destroy();
+
+    res.json({
+      success: true,
+      message: "Assignment deleted successfully",
+    });
   } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
   }
 };

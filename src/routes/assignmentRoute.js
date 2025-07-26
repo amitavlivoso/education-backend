@@ -1,10 +1,10 @@
 const router=require('express').Router();
-const TeacherController=require('../controller/Teachercontroller')
+const AssignmentController=require('../controller/Assignmentcontroller')
 
 
-router.post("/createAssignment",TeacherController.createAssignment)
- router.get("/getAssignments",TeacherController.getAssignments)
- router.get("/getAssignmentById/:id",TeacherController.getAssignmentById)
-router.post("/updateAssignment/:id",TeacherController.updateAssignment)
-router.delete("/deleteAssignment/:id",TeacherController.deleteAssignment)
+router.post("/createAssignment",AssignmentController.createAssignment)
+ router.get("/getAssignments",AssignmentController.getAssignments)
+ router.get("/getAssignmentById/:id",AssignmentController.getAssignmentById)
+router.post("/updateAssignment/:id",AssignmentController.updateAssignment)
+router.delete("/deleteAssignment/:id",AssignmentController.deleteAssignment)
 module.exports=router
