@@ -3,6 +3,11 @@ const sequelize = require('../config/db.config');
 const User = require('./User');
 
 const Teacher = sequelize.define('Teacher', {
+   id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   userid: {
     type: DataTypes.INTEGER,
     allowNull: false,

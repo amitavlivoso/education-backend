@@ -1,11 +1,12 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
-const User = require('./User');
 
-const Teacher = sequelize.define('Teacher', {
+
+const Assignment = sequelize.define('Assignment', {
  teacherid: {
     type: DataTypes.INTEGER,
     allowNull: false,
+   
    
   },
   subject: DataTypes.STRING,
@@ -19,4 +20,4 @@ const Teacher = sequelize.define('Teacher', {
 
 
 
-module.exports = Teacher;
+module.exports = Assignment;
