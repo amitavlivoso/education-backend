@@ -6,7 +6,6 @@ const sendOtpEmail=require('../utils/mailer')
 
 exports.register = async (req, res) => {
     try {
-
         const { name, email, password ,phone,role } = req.body;
         if (!name || !email || !password,!phone) {
             return res.json({
@@ -44,9 +43,6 @@ exports.register = async (req, res) => {
       message: "User registered. OTP sent to email.",
       success: true
     });
-
-    
-
 
     } catch (error) {
         console.error("Error in registration:", error);

@@ -1,14 +1,22 @@
 const Student = require('../models/Student');
-const User=require("../models/User")
-
-
+const User = require("../models/User");
 
 exports.updateStudentProfile = async (req, res) => {
   try {
-    const { email, enrollmentNumber, course, year, name, phone } = req.body;
+    const {
+      userId,
+      enrollmentNumber,
+      address,
+      bankDetails,
+      socialMediaLink,
+      education,
+      parentInfo,
+      name,
+      phone
+    } = req.body;
 
     // Find user and student
-    const user = await User.findOne({ where: { email, role: 'student' } });
+    const user = await User.findOne({ where: { id: userId, role: 'student' } });
     if (!user) return res.status(404).json({ message: "Student not found" });
 
     // Update user fields
@@ -22,13 +30,19 @@ exports.updateStudentProfile = async (req, res) => {
       student = await Student.create({
         userId: user.id,
         enrollmentNumber,
-        course,
-        year
+        address,
+        bankDetails,
+        socialMediaLink,
+        education,
+        parentInfo
       });
     } else {
-      if (enrollmentNumber) student.enrollmentNumber = enrollmentNumber;
-      if (course) student.course = course;
-      if (year) student.year = year;
+      if (enrollmentNumber !== undefined) student.enrollmentNumber = enrollmentNumber;
+      if (address !== undefined) student.address = address;
+      if (bankDetails !== undefined) student.bankDetails = bankDetails;
+      if (socialMediaLink !== undefined) student.socialMediaLink = socialMediaLink;
+      if (education !== undefined) student.education = education;
+      if (parentInfo !== undefined) student.parentInfo = parentInfo;
       await student.save();
     }
 

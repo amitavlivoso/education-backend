@@ -6,7 +6,7 @@ const Student = sequelize.define('Student', {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    unique: true,
+    
     references: {
       model: User,
       key: 'id'
@@ -14,17 +14,30 @@ const Student = sequelize.define('Student', {
   },
   enrollmentNumber: {
     type: DataTypes.STRING,
-    allowNull: true,
-    unique: true
+    allowNull: true,  
   },
-  course: {
-    type: DataTypes.STRING,
+
+  address:{
+   type: DataTypes.STRING,
     allowNull: true
   },
-  year: {
-    type: DataTypes.INTEGER,
+   bankDetails: {
+    type: DataTypes.JSON, 
     allowNull: true
-  }
+  },
+  socialMediaLink: {
+    type: DataTypes.STRING, 
+    allowNull: true
+  },
+  education: {
+    type: DataTypes.JSON, 
+    allowNull: true
+  },
+  parentInfo: {
+    type: DataTypes.JSON, 
+    allowNull: true
+  },
+  
 }, {
   timestamps: true
 });
