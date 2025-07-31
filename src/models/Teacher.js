@@ -11,10 +11,10 @@ const Teacher = sequelize.define('Teacher', {
   userid: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: 'Users', // Must match table name Sequelize auto-uses (pluralized form)
-      key: 'id',
-    },
+      references: {
+      model: User,
+      key: 'id'
+    }
   },
   address: DataTypes.STRING,
   subject: DataTypes.STRING,
@@ -24,8 +24,6 @@ const Teacher = sequelize.define('Teacher', {
   timestamps: true
 });
 
-// ✅ Define association here (this is okay in the model file)
-Teacher.belongsTo(User, { foreignKey: 'userid' });
-User.hasOne(Teacher, { foreignKey: 'userid' });
+
 
 module.exports = Teacher;

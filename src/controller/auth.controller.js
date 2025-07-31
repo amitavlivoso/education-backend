@@ -14,8 +14,8 @@ exports.register = async (req, res) => {
                 success: false,
             })
         }
-
-    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+const hashedPassword = await bcrypt.hash(password, 10);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     await sendOtpEmail(email, otp);
     const newuser = await User.create({
