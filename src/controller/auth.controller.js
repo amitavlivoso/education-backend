@@ -6,18 +6,26 @@ const sendOtpEmail = require("../utils/mailer");
 const cloudinary = require("../utils/cloudinary");
 
 exports.register = async (req, res) => {
-    try {
-        const { name, email, password ,phone,role } = req.body;
-        if (!name || !email || !password,!phone) {
-            return res.json({
-                message: "Please fill all the fields",
-                success: false,
-            })
-        }
-const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    const { name, email, password, phone, role } = req.body;
+    if (!name || !email || !password || !phone) {
+      return res.json({
+        message: "Please fill all the fields",
+        success: false,
+      })
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 min
 
-    await sendOtpEmail(email, otp);
+    try {
+      await sendOtpEmail(email, otp);
+    } catch (err) {
+      return res.status(500).json({
+        message: "Failed to send OTP email. Registration aborted.",
+        success: false,
+      });
+    }
     const newuser = await User.create({
       name,
       email,
@@ -34,10 +42,10 @@ const hashedPassword = await bcrypt.hash(password, 10);
       success: true,
     });
 
-    } catch (error) {
-        console.error("Error in registration:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
+  } catch (error) {
+    console.error("Error in registration:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 // VERIFY OTP
@@ -57,13 +65,13 @@ exports.verifyOtp = async (req, res) => {
       return res.json({ message: "User already verified", success: true });
     }
 
-    user.isVerified = true;
 
-    // user.otp = null;
-    // user.otpExpiry = null;
+    user.isVerified = true;
+    user.otp = null;
+    user.otpExpiry = null;
     await user.save();
 
-    res.json({ message: "OTP verified successfully", success: true });
+    res.json({ message: "Registration successful!", success: true, user });
   } catch (error) {
     console.error("OTP Verification Error:", error);
     res.status(500).json({ message: "Server error" });
