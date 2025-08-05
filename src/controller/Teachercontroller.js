@@ -90,7 +90,7 @@ exports.updateTeacher = async (req, res) => {
 };
 
 exports.createExam = async (req, res) => {
-  const { subjects, chapter, estimatedTime, totalCount, question,selectedExamType } = req.body;
+  const { subjects, chapter, estimatedTime, totalCount, question,selectedExamType,teacher_id } = req.body;
 
   if (!subjects || !chapter || !estimatedTime || !totalCount || !Array.isArray(question)) {
     return res.status(400).json({ success: false, message: "Invalid data" });
@@ -102,7 +102,8 @@ exports.createExam = async (req, res) => {
       chapter,
       estimated_time: estimatedTime,
       total_count: totalCount,
-      selectedExamType
+      selectedExamType,
+      teacher_id: teacher_id
     });
 
     const examId = exam.id;
