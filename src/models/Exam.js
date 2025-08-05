@@ -6,7 +6,9 @@ const Exam = sequelize.define("Exam", {
   subject: DataTypes.STRING,
   chapter: DataTypes.STRING,
   total_count: DataTypes.INTEGER,
-  estimated_time: DataTypes.INTEGER
+  estimated_time: DataTypes.INTEGER,
+  selectedExamType: DataTypes.STRING,
+ 
 }, {
   tableName: "exams",
   timestamps: true
