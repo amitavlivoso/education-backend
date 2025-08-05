@@ -5,7 +5,7 @@ const sequelize = require("./config/db.config");
 const path = require("path");
 require("dotenv").config();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
@@ -17,28 +17,35 @@ app.use((req, res, next) => {
     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
   );
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    // "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
-    "*"
-  );
+  res.setHeader("Access-Control-Allow-Headers", "*");
   next();
 });
 
+// Serve static frontend files
+const distPath = path.join(__dirname, "../dist");
+app.use(express.static(distPath));
+
+// API routes
+app.use("/api", require("./routes"));
+
+// Fallback for client-side routing (SPA)
+// app.get("/*", (req, res) => {
+//   res.sendFile(path.join(distPath, "index.html"));
+// });
+
+// DB connection
 sequelize
   .authenticate()
   .then(async () => {
-    sequelize.sync({ force: false, alter: true });
+    await sequelize.sync({ force: false, alter: true });
     console.log("Database connection has been established successfully.");
   })
   .catch((err) => {
     console.log("Unable to connect to the database:", err);
   });
 
-app.use("/api", require("./routes"));
-
-app.listen(8080, () => {
-  console.log("Your Server running at " + 8080);
+app.listen(port, () => {
+  console.log("Your Server running at port " + port);
 });
 
 module.exports = app;
