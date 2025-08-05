@@ -1,6 +1,7 @@
 const teacherservice=require('../services/teacher.service.js')
 const Question = require('../models/Questions.js');
 const Exam = require("../models/Exam.js");
+const StudyMaterial = require('../models/StudyMaterial.js');
 exports.createTeacher=async (req,res)=>{
 try{
 
@@ -155,3 +156,68 @@ exports.getAllExams = async (req, res) => {
   }
 };
 
+
+exports.uploadsmaterial = async (req, res) => {
+  const {
+    teacherId,
+    examType,
+    title,
+    desc,
+    subject,
+    chapter,
+    fileUrl,
+    fileName
+  } = req.body;
+
+  // Validate required fields
+  if (!teacherId || !examType || !title || !subject || !chapter || !fileUrl || !fileName) {
+    return res.status(400).json({ success: false, message: "Missing required fields" });
+  }
+
+  try {
+    const material = await StudyMaterial.create({
+      teacherId,
+      examType,
+      title,
+      desc,
+      subject,
+      chapter,
+      fileUrl,
+      fileName
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Study material uploaded successfully",
+      material
+    });
+  } catch (err) {
+    console.error("Upload study material error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+
+exports.getStudyMaterialsByExamType = async (req, res) => {
+  try {
+    const { examType } = req.params;; // or req.body if you prefer
+    const {teacherId} = req.query;
+
+    if (!examType) {
+      return res.status(400).json({ success: false, message: "examType is required" });
+    }
+
+    const materials = await StudyMaterial.findAll({
+      where: { examType, teacherId },
+    });
+
+    res.status(200).json({
+      success: true,
+      materials
+    });
+  } catch (err) {
+    console.error("Fetch study materials error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};

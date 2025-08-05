@@ -7,13 +7,10 @@ const Course = sequelize.define('Course', {
     type: DataTypes.INTEGER,
     allowNull: false,
    
-   
   },
-   categoryid: {
-    type: DataTypes.INTEGER,
+   ExamType: {
+    type: DataTypes.STRING,
     allowNull: false,
-   
-   
   },
   coursename: DataTypes.STRING,
   subjectname: DataTypes.STRING,
