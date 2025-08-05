@@ -12,11 +12,11 @@ exports.register = async (req, res) => {
       return res.json({
         message: "Please fill all the fields",
         success: false,
-      })
+      });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 min
 
     try {
       await sendOtpEmail(email, otp);
@@ -41,7 +41,6 @@ exports.register = async (req, res) => {
       message: "User registered. OTP sent to email.",
       success: true,
     });
-
   } catch (error) {
     console.error("Error in registration:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -64,7 +63,6 @@ exports.verifyOtp = async (req, res) => {
     if (user.isVerified) {
       return res.json({ message: "User already verified", success: true });
     }
-
 
     user.isVerified = true;
     user.otp = null;
@@ -92,7 +90,7 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, role: user.role, userName: user.name },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
