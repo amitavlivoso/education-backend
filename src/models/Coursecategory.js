@@ -7,7 +7,7 @@ const Coursecategory = sequelize.define('Coursecategory', {
     type: DataTypes.INTEGER,
     allowNull: false,
    
-   
+    
   },
   categorytype: DataTypes.STRING,
   price: DataTypes.INTEGER,
