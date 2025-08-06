@@ -7,5 +7,7 @@ router.post("/createteacher",TeacherController.createTeacher)
 router.post("/updateteacher/:id",TeacherController.updateTeacher)
 router.post("/createexam",TeacherController.createExam)
 router.get("/getexam",TeacherController.getAllExams)
+router.post("/studymaterial",TeacherController.uploadsmaterial)
+router.get("/getStudyMaterialsByExamType/:examType", TeacherController.getStudyMaterialsByExamType);
 
 module.exports=router
