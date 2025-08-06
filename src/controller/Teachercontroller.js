@@ -4,7 +4,6 @@ const Exam = require("../models/Exam.js");
 const StudyMaterial = require('../models/StudyMaterial.js');
 exports.createTeacher=async (req,res)=>{
 try{
-
     const body=req.body
     const newTeacher=await teacherservice.addData(body)
     res.json({
