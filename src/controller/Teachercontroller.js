@@ -220,3 +220,32 @@ exports.getStudyMaterialsByExamType = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+
+
+////result controller ......................
+exports.saveResult = async (req, res) => {
+  try {
+    const { examId, userId, attempted, correct, wrong, unattempted, total, status } = req.body;
+
+    if (!examId || !userId) {
+      return res.status(400).json({ success: false, message: "examId and userId are required" });
+    }
+
+    const saved = await Result.create({
+      examId,
+      userId,
+      attempted,
+      correct,
+      wrong,
+      unattempted,
+      total,
+      status,
+    });
+
+    res.status(200).json({ success: true, message: "Result saved", result: saved });
+  } catch (error) {
+    console.error("Error saving result:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};

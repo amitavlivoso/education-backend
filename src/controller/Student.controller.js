@@ -1,5 +1,6 @@
 const Student = require('../models/Student');
 const User = require("../models/User");
+const Result = require('../models/Result');
 
 exports.updateStudentProfile = async (req, res) => {
   try {
@@ -52,3 +53,56 @@ exports.updateStudentProfile = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+//...result  save
+
+exports.saveResult = async (req, res) => {
+  try {
+    const { examId, userId, attempted, correct, wrong, unattempted, total, status,subject,chapter } = req.body;
+
+    if (!examId || !userId) {
+      return res.status(400).json({ success: false, message: "examId and userId are required" });
+    }
+
+    const saved = await Result.create({
+      examId,
+      userId,
+      attempted,
+      correct,
+      wrong,
+      unattempted,
+      total,
+      status,
+      subject,
+      chapter
+    });
+
+    res.status(200).json({ success: true, message: "Result saved", result: saved });
+  } catch (error) {
+    console.error("Error saving result:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+exports.getResultsByUserId = async (req, res) => {
+  try{
+    const {userId} =  req.params;
+    if (!userId) {
+      return res.status(400).json({ success: false, message: "userId is required" });
+    }
+   const results = await Result.findAll({
+      where: { userId },
+      order: [['createdAt', 'DESC']],
+    });
+    if (!results || results.length === 0) {
+      return res.status(404).json({ success: false, message: "No results found for this user" });
+    }
+
+    return res.status(200).json({ success: true, results });
+    
+   
+  }catch (error) {
+    console.error("Error fetching results:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+}
