@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const sendOtpEmail = require("../utils/mailer");
 const cloudinary = require("../utils/cloudinary");
+const { Op } = require("sequelize");
 
 exports.register = async (req, res) => {
   try {
@@ -209,3 +210,41 @@ exports.uploadFilesFromForm = async (req, res) => {
     res.status(500).json({ error: "Upload failed: " + err.message });
   }
 };
+
+
+
+exports.filterUsers = async (req, res) => {
+  try {
+    const { page = 1, limit = 10, ...queryFilters } = req.body;
+
+    const filters = {};
+    const allowedFields = ["name", "email", "phone", "role", "isVerified"];
+
+    allowedFields.forEach((field) => {
+      if (queryFilters[field] !== undefined) {
+        filters[field] = queryFilters[field];
+      }
+    });
+
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+
+    const { count, rows: users } = await User.findAndCountAll({
+      where: filters,
+      limit: parseInt(limit),
+      offset,
+      order: [["createdAt", "DESC"]],
+    });
+
+    res.json({
+      success: true,
+      totalUsers: count,
+      currentPage: parseInt(page),
+      totalPages: Math.ceil(count / limit),
+      users,
+    });
+  } catch (error) {
+    console.error("Filter Users Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
