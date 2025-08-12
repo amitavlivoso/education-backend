@@ -18,5 +18,6 @@ router.post(
   upload.array("files", 10),
   authController.uploadFilesFromForm
 );
+router.post("/userfilter", authController.filterUsers);
 
 module.exports = router;
