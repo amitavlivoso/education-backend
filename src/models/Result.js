@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
-// models/Result.js
+//models/Result.js
 
   const Result = sequelize.define('Result', {
     examId: {
