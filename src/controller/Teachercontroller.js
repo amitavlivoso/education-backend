@@ -2,6 +2,7 @@ const teacherservice=require('../services/teacher.service.js')
 const Question = require('../models/Questions.js');
 const Exam = require("../models/Exam.js");
 const StudyMaterial = require('../models/StudyMaterial.js');
+const Result = require('../models/Result.js');
 exports.createTeacher=async (req,res)=>{
 try{
     const body=req.body
@@ -247,5 +248,49 @@ exports.saveResult = async (req, res) => {
   } catch (error) {
     console.error("Error saving result:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
+
   }
 };
+
+
+// controllers/resultController.js
+
+
+// exports.getResultsBySubjectAndChapter = async (req, res) => {
+//   try {
+//     const { subject, chapter } = req.query; // expecting: /api/results/filter?subject=Math&chapter=Chapter%201
+
+//     // ✅ Validation
+//     if (!subject || !chapter) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Both subject and chapter are required"
+//       });
+//     }
+
+//     // ✅ Fetch results
+//     const results = await Result.findAll({
+//       where: { subject, chapter }
+//     });
+
+//     if (results.length === 0) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "No results found for given subject and chapter"
+//       });
+//     }
+
+//     res.status(200).json({
+//       success: true,
+//       data: results
+//     });
+
+//   } catch (error) {
+//     console.error("Error fetching results:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Internal server error"
+//     });
+//   }
+// };
+

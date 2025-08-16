@@ -74,7 +74,8 @@ exports.saveResult = async (req, res) => {
       total,
       status,
       subject,
-      chapter
+      chapter,
+      teacherId
     });
 
     res.status(200).json({ success: true, message: "Result saved", result: saved });

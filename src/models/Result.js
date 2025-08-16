@@ -44,6 +44,10 @@ const sequelize = require('../config/db.config');
       type: DataTypes.STRING,
       allowNull: false,
     },
+     teacherId: {
+      type: DataTypes.INTEGER,
+      allowNull: true, // Assuming teacherId can be null
+    }
   });
 
     module.exports = Result;
